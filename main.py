@@ -10,7 +10,7 @@ nombreArchLST = nombre_archivo + ".LST"
 
 def archivoLST():
     try:
-        archivoLST = open(nombreArchLST, "x")
+        archivoLST = open(nombreArchLST, "w")
         archivoLST.write(".")
         archivoLST.close()
         print("Archivo LST creado con exito")

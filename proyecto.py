@@ -380,37 +380,49 @@ def Encontrar_ascii(lineas):
                 print(valor_decimal)
     return
 
-archivoLST()
-contarLineas()
+def Encontrar_ORG(linea):
+    if "ORG" in linea:
+        index = linea.find("ORG") 
+        inicio = linea[index:+25]
+        print(str(inicio))
+        return str(inicio)
 
-with open('START.ASC', 'r', buffering=1024) as archivo:
-    for linea in archivo:
-        # Buscar coincidencias del patrón en la línea actual
-        if re.search(IMM, linea):
-            # Realizar acciones con las coincidencias encontradas  
-            print(linea)  
-            Encontrar_ascii(linea)
-        elif re.search(DIR, linea):
-            # Realizar acciones con las coincidencias encontradas  
-            print(linea)  
-            Encontrar_ascii(linea)
-        elif re.search(IDX_Y, linea):
-            # Realizar acciones con las coincidencias encontradas  
-            print(linea)  
-            Encontrar_ascii(linea)
-        elif re.search(IND_X, linea):
-            # Realizar acciones con las coincidencias encontradas  
-            print(linea)  
-            Encontrar_ascii(linea)
-        elif re.search(EXT, linea):
-            # Realizar acciones con las coincidencias encontradas  
-            print(linea)  
-            Encontrar_ascii(linea) 
-        elif re.search(INH, linea):
-            # Realizar acciones con las coincidencias encontradas  
-            print(linea)  
-            Encontrar_ascii(linea)
-        elif re.search(REL, linea):
-            # Realizar acciones con las coincidencias encontradas  
-            print(linea)  
-            Encontrar_ascii(linea)
+def main():
+    with open('START.ASC', 'r', buffering=1024) as archivo:
+        for linea in archivo:
+            # Buscar coincidencias del patrón en la línea actual
+            if re.search(IMM, linea):
+                # Realizar acciones con las coincidencias encontradas  
+                print(linea)  
+                Encontrar_ascii(linea)
+            elif re.search(DIR, linea):
+                # Realizar acciones con las coincidencias encontradas  
+                print(linea)  
+                Encontrar_ascii(linea)
+            elif re.search(IDX_Y, linea):
+                # Realizar acciones con las coincidencias encontradas  
+                print(linea)  
+                Encontrar_ascii(linea)
+            elif re.search(IND_X, linea):
+                # Realizar acciones con las coincidencias encontradas  
+                print(linea)  
+                Encontrar_ascii(linea)
+            elif re.search(EXT, linea):
+                # Realizar acciones con las coincidencias encontradas  
+                print(linea)  
+                Encontrar_ascii(linea) 
+            elif re.search(INH, linea):
+                # Realizar acciones con las coincidencias encontradas  
+                print(linea)  
+                Encontrar_ascii(linea)
+            elif re.search(REL, linea):
+                # Realizar acciones con las coincidencias encontradas  
+                print(linea)  
+                Encontrar_ascii(linea)
+            idx=Encontrar_ORG(linea)
+        
+    #print(str(idx))
+    archivoLST()
+    contarLineas(idx)
+    
+main()

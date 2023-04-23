@@ -1,3 +1,4 @@
+
 import re
 from math import ceil
 
@@ -352,32 +353,34 @@ nombreArchLST = nombre_archivo + ".LST"
 def archivoLST():
     try:
         archivoLST = open(nombreArchLST, "w")
-        archivoLST.write(".")
         archivoLST.close()
         print("Archivo LST creado con exito")
     except FileNotFoundError:
         print("El archivo no se pudo crear debido a un problema externo")
 
 
-def contarLineas():
+def contarLineas(inicio):
     archivo_original = open(nombreASC, "r")
     #Inicializamos contador de líneas
     archivoLST = open(nombreArchLST, "w")
     contLineas = 0
     for lineasCont in archivo_original:
         contLineas += 1
-        archivoLST.write(str(contLineas)+ "\n")
+        archivoLST.write(str(contLineas)+ ": ")
+        
+    
     archivo_original.close()
     archivoLST.close()
     #print("El archivo tiene", contLineas, "lineas")
+    return contLineas
     
-def Encontrar_ascii(lineas):
+def Encontrar_ascii(linea):
     if "#'" in linea:
-            index = linea.find("#'") +2
-            simbolos = linea[index:-1]
-            for simbolo in simbolos:
-                valor_decimal = ord(simbolo)
-                print(valor_decimal)
+        index = linea.find("#'") + 2
+        simbolos = linea[index:-1]
+        for simbolo in simbolos:
+            valor_decimal = ord(simbolo)
+            print(valor_decimal)
     return
 
 def Encontrar_ORG(linea):
@@ -424,5 +427,6 @@ def main():
     #print(str(idx))
     archivoLST()
     contarLineas(idx)
-    
+
+
 main()

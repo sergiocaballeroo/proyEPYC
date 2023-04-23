@@ -2,7 +2,21 @@
 import re
 from math import ceil
 
-IMM = "(ADCA|adca|ADCB|adcb|ADDA|adda|ADDB|addb|ADDD|addd|ANDA|anda|ANDB|andb|BITA|bita|BITB|bitb|CMPA|cmpa|CMPB|cmpb|CPD|cpd|CPX|cpx|CPY|cpy|EORA|eora|EORB|eorb|LDAA|ldaa|LDAB|ldab|LDD|ldd|LDS|lds|LDX|ldx|LDY|ldy|ORAA|oraa|ORAB|orab|SBCA|sbca|SBCB|sbcb|SUBA|suba|SUBB|subb|SUBD|subd)([ ]*)([#])([$])"
+
+#Para compilar la expresión regular que busca los EQU	
+EQU = re.compile(r'\w+(\s)+(EQU)(\s)+\$\d+')
+#Para compilar la expresión regular que busca los ORG	
+ORG = re.compile(r'(\s)+(ORG)(\s)+\$\d+')
+#Para compilar la expresión regular que busvca los FCB	
+FCB = re.compile(r'(\s)+(FCB|fcb)(\s)+\$\w+\d+,\$\w+\d+')
+#Para compilar la expresión regular que busvca los END	
+END = re.compile(r'(\s)+(END|end|End)(\s)+\$\d+')
+#Para compilar la expresión regular que busca los comentarios	
+COMETARIOS = re.compile(r'(\*(\s+\w+)+\s\-(\w+\s)+\w+\-)|(\*(\s+\w+)+\s+\w+\-\w+)|(\*(\s+\w+)+\s+\(\w+((\s+\w+)+)*\))|(\*(\w+\s)+)(\*\s(\w+\s)+)|((\*\s(\w+\s{1,3})+))|(\*\s(\w+\s)+)|(\*(\ \s{1,5})(\w+\s)+)|(\*(\w+\s)+)|(\*+)')
+
+
+IMM=re.compile(r"(ADCA|adca|ADCB|adcb|ADDA|adda|ADDB|addb|ADDD|addd|ANDA|anda|ANDB|andb|BITA|bita|BITB|bitb|CMPA|cmpa|CMPB|cmpb|CPD|cpd|CPX|cpx|CPY|cpy|EORA|eora|EORB|eorb|LDAA|ldaa|LDAB|ldab|LDD|ldd|LDS|lds|LDX|ldx|LDY|ldy|ORAA|oraa|ORAB|orab|SBCA|sbca|SBCB|sbcb|SUBA|suba|SUBB|subb|SUBD|subd)([ ]*)([#])([$])"
+)
 D_IMM = {
     "ADCA": "89",
     "ADCB": "C9",
@@ -35,7 +49,7 @@ D_IMM = {
     "SUBD": "83",
 }
 
-DIR = "(ADCA|adca|ADCB|adcb|ADDA|adda|ADDB|addb|ADDD|addd|ANDA|anda|ANDB|andb|BCLR|bclr|BITA|bita|BITB|bitb|BRCLR|brclr|BRSET|brset|BSET|bset|CMPA|cmpa|CMPB|cmpb|CPD|cpd|CPX|cpx|CPY|cpy|EORA|eora|EORB|eorb|JSR|jsr|LDAA|ldaa|LDAB|ldab|LDD|ldd|LDS|lds|LDX|ldx|LDY|ldy|ORAA|oraa|ORAB|orab|SBCA|sbca|SBCB|sbcb|STAA|staa|STAB|stab|STD|std|STS|sts|STX|stx|STY|sty|SUBA|suba|SUBB|subb|SUBD|subd)([ ]*)([$])"
+DIR=re.compile(r"(ADCA|adca|ADCB|adcb|ADDA|adda|ADDB|addb|ADDD|addd|ANDA|anda|ANDB|andb|BCLR|bclr|BITA|bita|BITB|bitb|BRCLR|brclr|BRSET|brset|BSET|bset|CMPA|cmpa|CMPB|cmpb|CPD|cpd|CPX|cpx|CPY|cpy|EORA|eora|EORB|eorb|JSR|jsr|LDAA|ldaa|LDAB|ldab|LDD|ldd|LDS|lds|LDX|ldx|LDY|ldy|ORAA|oraa|ORAB|orab|SBCA|sbca|SBCB|sbcb|STAA|staa|STAB|stab|STD|std|STS|sts|STX|stx|STY|sty|SUBA|suba|SUBB|subb|SUBD|subd)([ ]*)([$])")
 D_DIR = {
     "ADCA": "99",
     "ADCB": "D9",
@@ -79,7 +93,7 @@ D_DIR = {
     "SUBD": "93"
 }
 
-IDX_Y = "(ADCA|adca|ADCB|adcb|ADDA|adda|ADDB|addb|ADDD|addd|ANDA|anda|ANDB|andb|ASL|asl|ASR|asr|BCLR|bclr|BITA|bita|BITB|bitb|BRCLR|brclr|BRSET|brset|BSET|bset|CLR|clr|CMPA|cmpa|CMPB|cmpb|COM|com|CPD|cpd|CPX|cpx|CPY|cpy|DEC|dec|EORA|eora|EORB|eorb|INC|inc|JMP|jmp|JSR|jsr|LDAA|ldaa|LDAB|ldab|LDD|ldd|LDS|lds|LDX|ldx|LDY|ldy|LSL|lsl|LSR|lsr|NEG|neg|ORAA|oraa|ORAB|orab|ROL|rol|ROR|ror|SBCA|sbca|SBCB|sbcb|STAA|staa|STAB|stab|STD|std|STS|sts|STX|stx|STY|sty|SUBA|suba|SUBB|subb|SUBD|subd|TST|tst)([ ]*)([$])(\w)([,])([y])"
+IDX_Y=re.compile(r"(ADCA|adca|ADCB|adcb|ADDA|adda|ADDB|addb|ADDD|addd|ANDA|anda|ANDB|andb|ASL|asl|ASR|asr|BCLR|bclr|BITA|bita|BITB|bitb|BRCLR|brclr|BRSET|brset|BSET|bset|CLR|clr|CMPA|cmpa|CMPB|cmpb|COM|com|CPD|cpd|CPX|cpx|CPY|cpy|DEC|dec|EORA|eora|EORB|eorb|INC|inc|JMP|jmp|JSR|jsr|LDAA|ldaa|LDAB|ldab|LDD|ldd|LDS|lds|LDX|ldx|LDY|ldy|LSL|lsl|LSR|lsr|NEG|neg|ORAA|oraa|ORAB|orab|ROL|rol|ROR|ror|SBCA|sbca|SBCB|sbcb|STAA|staa|STAB|stab|STD|std|STS|sts|STX|stx|STY|sty|SUBA|suba|SUBB|subb|SUBD|subd|TST|tst)([ ]*)([$])(\w)([,])([y])")
 D_IND_Y = {
     "ADCA": "18 A9",
     "ADCB": "18 E9",
@@ -136,7 +150,7 @@ D_IND_Y = {
     "TST": "18 6D"
 }
 
-IND_X = "(ADCA|adca|ADCB|adcb|ADDA|adda|ADDB|addb|ADDD|addd|ANDA|anda|ANDB|andb|ASL|asl|ASR|asr|BCLR|bclr|BITA|bita|BITB|bitb|BRCLR|brclr|BRSET|brset|BSET|bset|CLR|clr|CMPA|cmpa|CMPB|cmpb|COM|com|CPD|cpd|CPX|cpx|CPY|cpy|DEC|dec|EORA|eora|EORB|eorb|INC|inc|JMP|jmp|JSR|jsr|LDAA|ldaa|LDAB|ldab|LDD|ldd|LDS|lds|LDX|ldx|LDY|ldy|LSL|lsl|LSR|lsr|NEG|neg|ORAA|oraa|ORAB|orab|ROL|rol|ROR|ror|SBCA|sbca|SBCB|sbcb|STAA|staa|STAB|stab|STD|std|STS|sts|STX|stx|STY|sty|SUBA|suba|SUBB|subb|SUBD|subd|TST|tst)([ ]*)([$])(\W)([,])([X])"
+IDX_X=re.compile(r"(ADCA|adca|ADCB|adcb|ADDA|adda|ADDB|addb|ADDD|addd|ANDA|anda|ANDB|andb|ASL|asl|ASR|asr|BCLR|bclr|BITA|bita|BITB|bitb|BRCLR|brclr|BRSET|brset|BSET|bset|CLR|clr|CMPA|cmpa|CMPB|cmpb|COM|com|CPD|cpd|CPX|cpx|CPY|cpy|DEC|dec|EORA|eora|EORB|eorb|INC|inc|JMP|jmp|JSR|jsr|LDAA|ldaa|LDAB|ldab|LDD|ldd|LDS|lds|LDX|ldx|LDY|ldy|LSL|lsl|LSR|lsr|NEG|neg|ORAA|oraa|ORAB|orab|ROL|rol|ROR|ror|SBCA|sbca|SBCB|sbcb|STAA|staa|STAB|stab|STD|std|STS|sts|STX|stx|STY|sty|SUBA|suba|SUBB|subb|SUBD|subd|TST|tst)([ ]*)([$])(\W)([,])([X])")
 D_IND_X = {
     "ADCA": "A9",
     "ADCB": "E9",
@@ -193,7 +207,7 @@ D_IND_X = {
     "TST": "6D"
 }
 
-EXT = "(ADCA|adca|ADCB|adcb|ADDA|adda|ADDB|addb|ADDD|addd|ANDA|anda|ANDB|andb|ASL|asl|ASR|asr|BITA|bita|BITB|bitb|CLR|clr|CMPA|cmpa|CMPB|cmpb|COM|com|CPD|cpd|CPX|cpx|CPY|cpy|DEC|dec|EORA|eora|EORB|eorb|INC|inc|JMP|jmp|JSR|jsr|LDAA|ldaa|LDAB|ldab|LDD|ldd|LDS|lds|LDX|ldx|LDY|ldy|LSL|lsl|LSR|lsr|NEG|neg|ORAA|oraa|ORAB|orab|ROL|rol|ROR|ror|SBCA|sbca|SBCB|sbcb|STAA|staa|STAB|stab|STD|std|STS|sts|STX|stx|STY|sty|SUBA|suba|SUBB|subb|SUBD|subd|TST|tst)([ ]*)($)(\w{4})"
+EXT =re.compile(r"(ADCA|adca|ADCB|adcb|ADDA|adda|ADDB|addb|ADDD|addd|ANDA|anda|ANDB|andb|ASL|asl|ASR|asr|BITA|bita|BITB|bitb|CLR|clr|CMPA|cmpa|CMPB|cmpb|COM|com|CPD|cpd|CPX|cpx|CPY|cpy|DEC|dec|EORA|eora|EORB|eorb|INC|inc|JMP|jmp|JSR|jsr|LDAA|ldaa|LDAB|ldab|LDD|ldd|LDS|lds|LDX|ldx|LDY|ldy|LSL|lsl|LSR|lsr|NEG|neg|ORAA|oraa|ORAB|orab|ROL|rol|ROR|ror|SBCA|sbca|SBCB|sbcb|STAA|staa|STAB|stab|STD|std|STS|sts|STX|stx|STY|sty|SUBA|suba|SUBB|subb|SUBD|subd|TST|tst)([ ]*)($)(\w{4})")
 D_EXT = {
     "ADCA": "B9",
     "ADCB": "F9",
@@ -246,7 +260,7 @@ D_EXT = {
     "TST": "7D",
 }
 
-INH = "(ABA|aba|ABX|abx|ABY|aby|ASLA|asla|ASLB|aslb|ASLD|asld|ASRA|asra|ASRB|asrb|CBA|cba|CLC|clc|CLI|cli|CLRA|clra|CLRB|clrb|CLV|clv|COMA|coma|COMB|comb|DAA|daa|DECA|deca|DECB|decb|DES|des|DEX|dex|DEY|dey|FDIV|fdiv|IDIV|idiv|INCA|inca|INCB|incb|INS|ins|INX|inx|INY|iny|LSLA|lsla|LSLB|lslb|LSLD|lsld|LSRA|lsra|LSRB|lsrb|LSRD|lsrd|MUL|mul|NEGA|nega|NEGB|negb|NOP|nop|PSHA|psha|PSHB|pshb|PSHX|pshx|PSHY|pshy|PULA|pula|PULB|pulb|PULX|pulx|PULY|puly|ROLA|rola|ROLB|rolb|RORA|rora|RORB|rorb|RTI|rti|RTS|rts|SBA|sba|SEC|sec|SEI|sei|SEV|sev|STOP|stop|SWI|swi|TAB|tab|TAP|tap|TETS|tets|TPA|tpa|TSTA|tsta|TSTB|tstb|TSX|tsx|TSY|tsy|TXS|txs|TYS|tys|WAI|wai|XGDX|xgdx|XGDY|xgdy)"
+INH = re.compile(r"(ABA|aba|ABX|abx|ABY|aby|ASLA|asla|ASLB|aslb|ASLD|asld|ASRA|asra|ASRB|asrb|CBA|cba|CLC|clc|CLI|cli|CLRA|clra|CLRB|clrb|CLV|clv|COMA|coma|COMB|comb|DAA|daa|DECA|deca|DECB|decb|DES|des|DEX|dex|DEY|dey|FDIV|fdiv|IDIV|idiv|INCA|inca|INCB|incb|INS|ins|INX|inx|INY|iny|LSLA|lsla|LSLB|lslb|LSLD|lsld|LSRA|lsra|LSRB|lsrb|LSRD|lsrd|MUL|mul|NEGA|nega|NEGB|negb|NOP|nop|PSHA|psha|PSHB|pshb|PSHX|pshx|PSHY|pshy|PULA|pula|PULB|pulb|PULX|pulx|PULY|puly|ROLA|rola|ROLB|rolb|RORA|rora|RORB|rorb|RTI|rti|RTS|rts|SBA|sba|SEC|sec|SEI|sei|SEV|sev|STOP|stop|SWI|swi|TAB|tab|TAP|tap|TETS|tets|TPA|tpa|TSTA|tsta|TSTB|tstb|TSX|tsx|TSY|tsy|TXS|txs|TYS|tys|WAI|wai|XGDX|xgdx|XGDY|xgdy)")
 D_INH = {
     "ABA": "1B",
     "ABX": "3A",
@@ -323,7 +337,7 @@ D_INH = {
     "XGDY": "18 8F",
 }
 
-REL = "(BCC|bcc|BCS|bcs|BEQ|beq|BGE|bge|BGT|bgt|BHI|bhi|BHS|bhs|BLE|ble|BLO|blo|BLS|bls|BLT|blt|BMI|bmi|BNE|bne|BPL|bpl|BRA|bra|BRN|brn|BSR|bsr|BVC|bvc|BVS|bvs)"
+REL = re.compile(r"(BCC|bcc|BCS|bcs|BEQ|beq|BGE|bge|BGT|bgt|BHI|bhi|BHS|bhs|BLE|ble|BLO|blo|BLS|bls|BLT|blt|BMI|bmi|BNE|bne|BPL|bpl|BRA|bra|BRN|brn|BSR|bsr|BVC|bvc|BVS|bvs)")
 D_REL = {
     "BCC": "24",
     "BCS": "25",
@@ -350,29 +364,36 @@ nombre_archivo="START"
 nombreASC = nombre_archivo + ".ASC"
 nombreArchLST = nombre_archivo + ".LST"
 
-def archivoLST():
-    try:
-        archivoLST = open(nombreArchLST, "w")
-        archivoLST.close()
-        print("Archivo LST creado con exito")
-    except FileNotFoundError:
-        print("El archivo no se pudo crear debido a un problema externo")
+def ArchLST():
+    with open(nombreASC, "r") as archivo:
+        lineas = archivo.readlines()
+        num_lineas = len(lineas)
 
+    with open(nombreArchLST, "w") as archivo:
+        for i in range(num_lineas):
+            archivo.write(f"{i+1}: {lineas[i]}")
 
-def contarLineas(inicio):
-    archivo_original = open(nombreASC, "r")
-    #Inicializamos contador de líneas
-    archivoLST = open(nombreArchLST, "w")
-    contLineas = 0
-    for lineasCont in archivo_original:
-        contLineas += 1
-        archivoLST.write(str(contLineas)+ ": ")
-        
+def Errores(linea):
     
-    archivo_original.close()
-    archivoLST.close()
-    #print("El archivo tiene", contLineas, "lineas")
-    return contLineas
+    with open("ERRORES.txt", "w") as E:
+        #ERROR VARIABLE
+        if "EQU" or "equ" in linea: 
+            E.write("") 
+        else:
+            E.write("001 VARIABLE INEXISTENTE")
+        #ERROR CONSTANTE
+        if "#" and "EQU" or "equ" in linea:
+            E.write("")
+        else:
+            E.write("002 CONSTANTE INEXISTENTE")
+        
+        #ERROR END
+        if "END" in linea:
+            E.write("")
+        else:
+
+            E.write("010 NO SE ENCUENTRA END :")
+
     
 def Encontrar_ascii(linea):
     if "#'" in linea:
@@ -393,40 +414,53 @@ def Encontrar_ORG(linea):
 def main():
     with open('START.ASC', 'r', buffering=1024) as archivo:
         for linea in archivo:
+            if re.search(EQU,linea):
+                print(linea)
+            if re.search(ORG,linea):
+                print(linea) 
+            if re.search(FCB,linea):
+                print(linea) 
+            if re.search(COMETARIOS,linea):
+                print(linea)   
             # Buscar coincidencias del patrón en la línea actual
             if re.search(IMM, linea):
+                print("IMM")
                 # Realizar acciones con las coincidencias encontradas  
                 print(linea)  
                 Encontrar_ascii(linea)
             elif re.search(DIR, linea):
+                print("DIR")
                 # Realizar acciones con las coincidencias encontradas  
                 print(linea)  
                 Encontrar_ascii(linea)
             elif re.search(IDX_Y, linea):
+                print("IDX_Y")
                 # Realizar acciones con las coincidencias encontradas  
                 print(linea)  
                 Encontrar_ascii(linea)
-            elif re.search(IND_X, linea):
+            elif re.search(IDX_X, linea):
+                print("IDX_X")
                 # Realizar acciones con las coincidencias encontradas  
                 print(linea)  
                 Encontrar_ascii(linea)
             elif re.search(EXT, linea):
+                print("EXT")
                 # Realizar acciones con las coincidencias encontradas  
                 print(linea)  
                 Encontrar_ascii(linea) 
             elif re.search(INH, linea):
+                print("INH")
                 # Realizar acciones con las coincidencias encontradas  
                 print(linea)  
                 Encontrar_ascii(linea)
             elif re.search(REL, linea):
+                print("REL")
                 # Realizar acciones con las coincidencias encontradas  
                 print(linea)  
                 Encontrar_ascii(linea)
-            idx=Encontrar_ORG(linea)
+            #idx=Encontrar_ORG(linea)
         
     #print(str(idx))
-    archivoLST()
-    contarLineas(idx)
-
-
+    ArchLST()
+    Errores(linea)
 main()

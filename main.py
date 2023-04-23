@@ -57,3 +57,4 @@ with open('START.ASC', 'r', buffering=1024) as archivo:
             archivoLST()
             contarLineas()
            
+

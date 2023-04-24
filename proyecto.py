@@ -702,14 +702,6 @@ def ArchLST():
         for i in range(num_lineas):
             archivo.write(f"{i+1}: {lineas[i]}")
 
-nombreArch19 = nombre_archivo + ".s19"
-def ArchS19():
-    with open(nombreArch19, "w") as archivo:
-        for lineas in archivo:
-            archivo.write("<"+">")
-
-    archivo.close
-
 def Errores(linea):
     
     with open("ERRORES.txt", "w") as E:
@@ -723,7 +715,7 @@ def Errores(linea):
             E.write("")
         else:
             E.write("002 CONSTANTE INEXISTENTE")
-        
+
         #ERROR END
         if "END" in linea:
             E.write("")
@@ -756,65 +748,94 @@ def Encontrar_ascii(linea):
             print(valor_decimal)
     return
 
-def Encontrar_ORG(linea):
-    if "ORG" in linea:
-        index = linea.find("ORG") 
-        inicio = linea[index:+25]
-        print(str(inicio))
-        return str(inicio)
+def inicioORG(archivo):
+    linea_num = 0  
+    for linea in archivo:
+        linea_num += 1  # Incrementar el número de línea en cada iteración
+        if 'ORG' in linea:
+            # Dividir la línea por espacios en blanco
+            partes = linea.split()
+            # Encontrar el valor hexadecimal después de la directiva ORG
+            for parte in partes:
+                if parte.startswith('$'):
+                    # Extraer los dígitos después del símbolo $
+                    direccion_hex = parte[1:]
+                    # Convertir el valor hexadecimal a entero
+                    direccion_dec = int(direccion_hex, 16)
+                    # Devolver la dirección y el número de línea
+                    return direccion_dec, linea_num
+
 
 def main():
     with open('START.ASC', 'r', buffering=1024) as archivo:
+        direccion_org, num_linea = inicioORG(archivo)
+        print("{:04X}".format(direccion_org))
+        print("{}".format(num_linea))
         for linea in archivo:
             if re.search(EQU,linea):
-                print(linea)
+                if '* ' not in linea:
+                    print(linea)
             if re.search(ORG,linea):
-                print(linea) 
+                if '* ' not in linea:
+                    print(linea) 
             if re.search(FCB,linea):
-                print(linea) 
+                if '* ' not in linea:
+                    print(linea) 
             if re.search(COMETARIOS,linea):
-                print(linea)   
+                if '* ' not in linea:
+                    print(linea)   
             # Buscar coincidencias del patrón en la línea actual
             if re.search(IMM, linea):
-                print("IMM")
+                if '* ' not in linea:
+                    if linea:
+                        for clave in linea:
+                            if clave in D_IMM:
+                                print("{} , {}".format(clave, D_IMM[clave]))
+                    print("IMM")
                 # Realizar acciones con las coincidencias encontradas  
-                print(linea)  
-                Encontrar_ascii(linea)
+                    print(linea)  
+                    Encontrar_ascii(linea)
             elif re.search(DIR, linea):
-                print("DIR")
-                # Realizar acciones con las coincidencias encontradas  
-                print(linea)  
-                Encontrar_ascii(linea)
+                if '* ' not in linea:
+                    print("DIR")
+                    # Realizar acciones con las coincidencias encontradas  
+                    print(linea)  
+                    Encontrar_ascii(linea)
             elif re.search(IDX_Y, linea):
-                print("IDX_Y")
-                # Realizar acciones con las coincidencias encontradas  
-                print(linea)  
-                Encontrar_ascii(linea)
+                if '* ' not in linea:
+                    print("IDX_Y")
+                    # Realizar acciones con las coincidencias encontradas  
+                    print(linea)  
+                    Encontrar_ascii(linea)
             elif re.search(IDX_X, linea):
-                print("IDX_X")
-                # Realizar acciones con las coincidencias encontradas  
-                print(linea)  
-                Encontrar_ascii(linea)
+                if '* ' not in linea:
+                    print("IDX_X")
+                    # Realizar acciones con las coincidencias encontradas  
+                    print(linea)  
+                    Encontrar_ascii(linea)
             elif re.search(EXT, linea):
-                print("EXT")
-                # Realizar acciones con las coincidencias encontradas  
-                print(linea)  
-                Encontrar_ascii(linea) 
+                if '* ' not in linea:
+                    print("EXT")
+                    # Realizar acciones con las coincidencias encontradas  
+                    print(linea)  
+                    Encontrar_ascii(linea) 
             elif re.search(INH, linea):
-                print("INH")
-                # Realizar acciones con las coincidencias encontradas  
-                print(linea)  
-                Encontrar_ascii(linea)
+                if '* ' not in linea:
+                    print("INH")
+                    # Realizar acciones con las coincidencias encontradas  
+                    print(linea)  
+                    Encontrar_ascii(linea)
             elif re.search(REL, linea):
-                print("REL")
-                # Realizar acciones con las coincidencias encontradas  
-                print(linea)  
-                Encontrar_ascii(linea)
+                if '* ' not in linea:
+                    print("REL")
+                    # Realizar acciones con las coincidencias encontradas  
+                    print(linea)  
+                    Encontrar_ascii(linea)
             #idx=Encontrar_ORG(linea)
         
     #print(str(idx))
     ArchLST()
     Errores(linea)
 main()
-A=HEX(15)
-print(A)
+
+
